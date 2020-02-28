@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+// 1. Vendors
+@import "~sass-mq/mq";
+@import "vendors/mq";
+@import "~toastr";
+
+// 2. Configuration and helpers
+@import "abstracts/variables";
+@import "abstracts/functions";
+@import "abstracts/utility";
+@import "abstracts/mixins";
+
+// 3. Base stuff
+@import "base/reset";
+@import "base/color";
+//@import "base/typography";
+
+// 4. components
+@import "components/buttons";
+// @import "components/icon";
+//@import "components/table";
+//@import "components/form";
+// @import "components/modal";
+//@import "components/modules";
+
+// 5. Layout-related sections
+// @import "layout/header";
+ @import "layout/sidebar";
+ @import "layout/search";
+
+// 6. Page-specific styles
+//@import "pages/common";
+@import "pages/top";
+// @import "pages/ie";
+// @import "pages/404";

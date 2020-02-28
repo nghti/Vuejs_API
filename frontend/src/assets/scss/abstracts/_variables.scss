@@ -1,0 +1,60 @@
+// variables
+//
+
+// base-url
+$base-url: 'assets/images' !default;
+
+// font-family
+$font--family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+// ---- color
+// https://css-tricks.com/what-do-you-name-color-variables/#comment-1653710
+// http://chir.ag/projects/name-that-color
+
+$color-white-057: rgba(255, 255, 255, 0.57);
+$color-black-05: rgba(0, 0, 0, 0.5);
+$color-transparent: transparent;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-red: #ff0d00;
+$color-blue: #007bff;
+$color-porcelain: #ebeef0;
+$color-macaroni-cheese: #FEC97D;
+$color-geyser: #D3DBE2;
+$color-crimson: #ea1010;
+$color-picton-blue: #519be6;
+
+// ---- set color
+$color: () !default;
+$color: map-merge(
+  (
+    "white":             $color-white,
+    "black":             $color-black,
+    "red":               $color-red,
+    "blue":              $color-blue,
+    "porcelain":         $color-porcelain,
+    "macaroni-cheese":   $color-macaroni-cheese,
+    "geyser":            $color-geyser,
+    "crimson":           $color-crimson,
+    "picton-blue":       $color-picton-blue
+  ),
+  $color
+);
+
+// ---- set border
+$border-width: 1px !default;
+$border-color: $color-porcelain !default;
+
+$border-radius: 4px !default;
+$rounded-pill: 50rem !default;
+$yiq-contrasted-threshold:  150 !default;
+
+// ---- breakpoints
+// See https://github.com/sass-mq/sass-mq/ for original full version.
+$mq-breakpoints: (
+  mobile-small:  321px,
+  mobile:  375px,
+  mobile-wide:  415px,
+  tablet:  768px,
+  desktop: 1280px,
+);

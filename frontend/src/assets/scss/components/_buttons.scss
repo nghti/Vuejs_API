@@ -1,0 +1,29 @@
+// button
+//
+
+.btn {
+  border: 2px solid $color-transparent;
+  padding: 0 20px;
+  height: 35px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+// ---- colours
+@each $color, $value in $color {
+  .btn-#{$color} {
+    color: color-yiq($value);
+    background-color: $value;
+    border-color: $value;
+
+    //@include hover {
+    //  color: color-yiq(darken($value, 7.5%));
+    //  @include gradient-bg(darken($value, 7.5%));
+    //  border-color: darken($value, 10%);
+    //}
+  }
+}

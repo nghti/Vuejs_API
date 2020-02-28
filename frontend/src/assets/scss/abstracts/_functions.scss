@@ -1,0 +1,102 @@
+// This file contains CSS helper classes.
+//
+
+//------------------------------------| Width |------------------------------------
+// (ex: w-5 { width: 5% !important; })
+// .w-0, .w-1 >> .w-100
+@for $value from 0 through 100 {
+  .w-#{$value + 0} { width: $value + 0% !important; }
+}
+@include mq($until: tablet) {
+  @for $value from 0 through 100 {
+    .w-md-#{$value + 0} { width: $value + 0% !important; }
+  }
+}
+
+// (ex: .w-x20 { width: 20px !important; })
+// .w-x20, .w-x21 >> .w-x100
+@for $value from 20 through 100 {
+  .w-x#{$value + 0} { width: $value + px !important; }
+}
+
+//------------------------------------| Height |------------------------------------
+// (ex: .h-x10 { height: 10px !important; })
+// .h-x10, .h-x11 >> .h-x40
+@for $value from 0 through 30 {
+  .h-x#{$value + 10} { height: $value + 10px !important; }
+}
+
+// .h-x50, .h-x60 >> .h-x100
+@for $value from 5 through 10 {
+  .h-x#{$value * 10} { height: $value * 10px !important; }
+}
+
+//------------------------------------| Margin & Padding All |------------------------------------
+// Margin-$ & Padding-$ For all
+// (ex: m-10 { margin: 10px !important; })
+// .m-0, .m-1 >> .m-30
+// .p-0, .p-1 >> .p-30
+@for $value from 0 through 20 {
+  .m-#{$value} { margin: $value + px !important; }
+  .p-#{$value} { padding: $value + px !important; }
+
+  .mx-#{$value} { margin-right: $value + px !important; margin-left: $value + px !important; }
+  .my-#{$value} { margin-top: $value + px !important; margin-bottom: $value + px !important; }
+  .px-#{$value} { padding-right: $value + px !important; padding-left: $value + px !important; }
+  .py-#{$value} { padding-top: $value + px !important; padding-bottom: $value + px !important; }
+
+  .mt-#{$value} { margin-top: $value + px !important; }
+  .mr-#{$value} { margin-right: $value + px !important; }
+  .mb-#{$value} { margin-bottom: $value + px !important; }
+  .ml-#{$value} { margin-left: $value + px !important; }
+
+  .pt-#{$value} { padding-top: $value + px !important; }
+  .pr-#{$value} { padding-right: $value + px !important; }
+  .pb-#{$value} { padding-bottom: $value + px !important; }
+  .pl-#{$value} { padding-left: $value + px !important; }
+}
+@include mq(tablet) {
+  @for $value from 0 through 20 {
+    .m-md-#{$value} { margin: $value + px !important; }
+    .p-md-#{$value} { padding: $value + px !important; }
+
+    .mx-md-#{$value} { margin-right: $value + px !important; margin-left: $value + px !important; }
+    .my-md-#{$value} { margin-top: $value + px !important; margin-bottom: $value + px !important; }
+    .px-md-#{$value} { padding-right: $value + px !important; padding-left: $value + px !important; }
+    .py-md-#{$value} { padding-top: $value + px !important; padding-bottom: $value + px !important; }
+
+    .mt-md-#{$value} { margin-top: $value + px !important; }
+    .mr-md-#{$value} { margin-right: $value + px !important; }
+    .mb-md-#{$value} { margin-bottom: $value + px !important; }
+    .ml-md-#{$value} { margin-left: $value + px !important; }
+
+    .pt-md-#{$value} { padding-top: $value + px !important; }
+    .pr-md-#{$value} { padding-right: $value + px !important; }
+    .pb-md-#{$value} { padding-bottom: $value + px !important; }
+    .pl-md-#{$value} { padding-left: $value + px !important; }
+  }
+}
+
+//------------------------------------| font size |------------------------------------
+// (ex: .fs-30 { font-size: 30px !important; })
+// .fs-10, .fs-11 >> .fs-30
+@for $value from 10 through 30 {
+  .fs-#{$value} { font-size: $value + px !important; }
+}
+@include mq(tablet) {
+  @for $value from 10 through 30 {
+    .fs-md-#{$value} { font-size: $value + px !important; }
+  }
+}
+
+//------------------------------------| line height |------------------------------------
+// (ex: .lh-30 { line-height: 30px !important; })
+// .lh-10, .lh-11 >> .lh-30
+@for $value from 10 through 30 {
+  .lh-#{$value} { line-height: $value + px !important; }
+}
+@include mq(tablet) {
+  @for $value from 10 through 30 {
+    .lh-md-#{$value} { line-height: $value + px !important; }
+  }
+}

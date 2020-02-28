@@ -1,0 +1,88 @@
+// modules
+//
+
+//// ----  badge
+//.badge {
+//  display: inline-block;
+//  min-width: 10px;
+//  padding: 4px 5px;
+//  font-size: 12px;
+//  font-weight: 700;
+//  line-height: 1;
+//  text-align: center;
+//  white-space: nowrap;
+//  vertical-align: middle;
+//  border-radius: 5px;
+//
+//  &-big {
+//    padding: 2px;
+//    border-radius: 13px;
+//    min-width: 30px;
+//  }
+//
+//  &-large {
+//    padding: 7px 15px;
+//    border-radius: 14px;
+//    min-width: 25px;
+//  }
+//
+//  &-small {
+//    padding: 2px;
+//    border-radius: 13px;
+//    min-width: 25px;
+//    font-size: 9px;
+//  }
+//
+//  &-normal {
+//    padding: 2px;
+//    border-radius: 13px;
+//    min-width: 25px;
+//    font-size: 14px;
+//  }
+//}
+//
+//// ---- pagination
+//.pagination {
+//  text-align: center;
+//  padding: 20px 0;
+//
+//  &-item {
+//    display: inline-block;
+//    width: 20px;
+//    height: 20px;
+//    border-radius: 50%;
+//    border: 1px solid $color-alto;
+//    color: $color-alto;
+//    padding: 3px;
+//    font-size: 11px;
+//    margin: 0 4px;
+//
+//    &.active {
+//      background: $color-picton-blue;
+//      border: 1px solid $color-picton-blue;
+//      color: $color-white;
+//    }
+//  }
+//}
+
+//// ---- box center
+//.box-center {
+//  position: absolute;
+//  transform: translate(-50%, -50%);
+//  left: 50%;
+//  top: 50%;
+//}
+//
+//// ---- box shadow
+//.box-shadow {
+//  background: $color-white;
+//  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//  border-radius: 4px;
+//}
+//
+//// ---- line
+//.border-line {
+//  border: none;
+//  height: 2px;
+//  background: $color-black;
+//}

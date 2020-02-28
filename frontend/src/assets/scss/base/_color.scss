@@ -1,0 +1,22 @@
+// color
+//
+
+//------------------------------------| text |------------------------------------
+@each $color, $value in $color {
+  .cl-#{$color} {
+    color: #{$value} !important;
+  }
+}
+
+//------------------------------------| background |------------------------------------
+@each $color, $value in $color {
+  .bg-#{$color} {
+    background-color: #{$value} !important;
+  }
+}
+
+//------------------------------------| badge |------------------------------------
+.badge-black {
+  background-color: $color-black !important;
+  color: $color-white !important;
+}

@@ -1,0 +1,59 @@
+// 404
+// 
+
+.nfound {
+  overflow: hidden !important;
+  height: 100vh;
+
+  &_title {
+    letter-spacing: 6px;
+  }
+}
+
+._404 {
+  font-size: 220px;
+  height: 250px;
+  letter-spacing: 15px;
+}
+
+.btn-404 {
+  background-color: $color-white;
+  display: inline-block;
+  width: 358px;
+  color: $color-picton-blue;
+}
+
+.hr_404 {
+  border-top: 5px solid $color-white;
+  margin: 0 auto;
+  width: 420px;
+
+  &:after {
+    display: inline-block;
+    position: relative;
+    top: -0.45em;
+    font-size: 2em;
+    padding: 0 0.2em;
+    background: $color-picton-blue;
+  }
+}
+
+@media (max-width: 768px) {
+  ._404 {
+    font-size: 150px;
+    height: 100px;
+  }
+
+  .nfound_title {
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .hr_404 {
+    width: 300px;
+  }
+
+  .btn-404 {
+    width: 280px;
+  }
+}

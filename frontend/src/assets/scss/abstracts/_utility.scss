@@ -1,0 +1,242 @@
+// utility
+//
+
+//------------------------------------| border |------------------------------------
+.border         { border: $border-width solid $border-color !important; }
+.border-top     { border-top: $border-width solid $border-color !important; }
+.border-right   { border-right: $border-width solid $border-color !important; }
+.border-bottom  { border-bottom: $border-width solid $border-color !important; }
+.border-left    { border-left: $border-width solid $border-color !important; }
+
+@for $value from 1 through 3 {
+  .border-#{$value + 1} { border: $value + 1px solid !important; }
+  .border-top-#{$value + 1} { border-top: $value + 1px solid !important; }
+  .border-right-#{$value + 1} { border-right: $value + 1px solid !important; }
+  .border-bottom-#{$value + 1} { border-bottom: $value + 1px solid !important; }
+  .border-left-#{$value + 1} { border-left: $value + 1px solid !important; }
+}
+
+@each $color, $value in $color {
+  .border-#{$color} {
+    border-color: $value !important;
+  }
+}
+
+//------------------------------------| Border-radius |------------------------------------
+.rounded {
+  border-radius: $border-radius !important;
+}
+
+.rounded-top {
+  border-top-left-radius: $border-radius !important;
+  border-top-right-radius: $border-radius !important;
+}
+
+.rounded-right {
+  border-top-right-radius: $border-radius !important;
+  border-bottom-right-radius: $border-radius !important;
+}
+
+.rounded-bottom {
+  border-bottom-right-radius: $border-radius !important;
+  border-bottom-left-radius: $border-radius !important;
+}
+
+.rounded-left {
+  border-top-left-radius: $border-radius !important;
+  border-bottom-left-radius: $border-radius !important;
+}
+
+@for $value from 4 through 6 {
+  .rounded-#{$value + 1} { border-radius: $value + 1px !important; }
+
+  .rounded-top-#{$value + 1} { border-top-left-radius: $value + 1px !important; border-top-right-radius: $value + 1px !important; }
+  .rounded-right-#{$value + 1} { border-top-right-radius: $value + 1px !important; border-bottom-right-radius: $value + 1px !important; }
+  .rounded-bottom-#{$value + 1} { border-bottom-right-radius: $value + 1px !important; border-bottom-left-radius: $value + 1px !important; }
+  .rounded-left-#{$value + 1} { border-top-left-radius: $value + 1px !important; border-bottom-left-radius: $value + 1px !important; }
+
+  .rounded-top-right-#{$value + 1} {border-top-right-radius: $value + 1px !important;}
+  .rounded-top-left-#{$value + 1} {border-top-left-radius: $value + 1px !important;}
+  .rounded-bottom-right-#{$value + 1} {border-bottom-right-radius: $value + 1px !important;}
+  .rounded-bottom-left-#{$value + 1} {border-bottom-left-radius: $value + 1px !important;}
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+.rounded-pill {
+  border-radius: $rounded-pill !important;
+}
+
+.rounded-0 {
+  border-radius: 0 !important;
+}
+
+//------------------------------------| flex |------------------------------------
+.d-flex {
+  display: flex!important;
+}
+
+.d-inline-flex {
+  display: inline-flex!important;
+}
+
+.d-block {
+  display: block!important;
+}
+
+.d-inline-block {
+  display: inline-block!important;
+}
+
+.flex-col {
+  display: flex!important;
+  flex-wrap: wrap!important;
+}
+
+.flex-center {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.flex-between {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.flex-around {
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+}
+
+.flex-start {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+
+//------------------------------------| auto box |------------------------------------
+.mg-auto {
+  margin: auto !important;
+}
+
+.mg-center {
+  margin: 0 auto !important;
+}
+
+.ml-auto {
+  margin-left: auto !important;
+}
+
+//------------------------------------| cursor |------------------------------------
+.c-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-auto {
+  cursor: auto !important;
+}
+
+//------------------------------------| overflow |------------------------------------
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-hd {
+  overflow: hidden !important;
+}
+
+.overflow-y-hd {
+  overflow-y: hidden !important;
+}
+
+.overflow-x-hd {
+  overflow-x: hidden !important;
+}
+
+//------------------------------------| text |------------------------------------
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+  text-underline-position: under !important;
+}
+
+.text-left {
+  text-align: left!important;
+}
+
+.text-right {
+  text-align: right!important;
+}
+
+.text-center {
+  text-align: center!important;
+}
+
+//------------------------------------| Helper |------------------------------------
+.link-none {
+  pointer-events: none !important;
+}
+
+.border-none {
+  border: none !important;
+}
+
+.font-bold {
+  font-weight: bold!important;
+}
+
+.float-left {
+  float: left!important;
+}
+
+.float-right {
+  float: right!important;
+}
+
+// Page tablets (min-width: 768px)
+//
+@include mq(tablet) {
+  .border-md-none {
+    border: none !important;
+  }
+
+  .rounded-md-0 {
+    border-radius: 0 !important;
+  }
+
+  .flex-md-center {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .flex-md-between {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .flex-md-around {
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+  }
+
+  .flex-md-start {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+
+  .text-md-center {
+    text-align: center !important;
+  }
+}
