@@ -1,4 +1,4 @@
 export default {
-  collapsedSideBar: false,
+  collapsedSideBar: true,
   loading: false
 }

@@ -3,6 +3,7 @@
     <h2 class="title">Bản Tính Dòng Tiền Kinh Doanh</h2>
     <a-tabs defaultActiveKey="1">
       <a-tab-pane tab="Cơ bản" key="1">
+        <h4 style="marginBottom: 25px; fontSize: 20px">Không tốn phí sửa chữa và phí dịch vụ</h4>
         <a-form :form="form" @submit="handleSubmit">
           <a-form-item label="Trệt (MB)" v-bind="formItemLayout" class="label-bold">
             <a-input-number
@@ -49,47 +50,57 @@
           </a-form-item>
           <a-form-item label="Danh thu" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyDanhthu }} VND / 1 Tháng
+              {{ MoneyDanhThu }} VND
             </h2>
           </a-form-item>
           <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyGiathue }} VND / 1 Tháng
-            </h2>
+            <a-input-number
+              :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+              :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
+              :placeholder="placeholder"
+              v-decorator="['gt']"
+              style="width: 90%"
+            />
           </a-form-item>
           <a-form-item label="Tiền cọc với chủ" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyToicoc }} VND / 3 Tháng
+            <h2 v-if="formMe.gt">
+              {{ MoneyCocChu01 }} VND / 3 Tháng
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{ MoneyCocChu02 }} VND / 3 Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Tiền cọc của khách" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyDanhthu }} VND / 1 Tháng
+              {{MoneyCocKhach}} VND / 1 Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Tổng đầu tư" v-bind="formItemLayout" class="red-h2 label-bold">
-            <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyTong }} VND
+            <h2 v-if="formMe.gt">
+              {{ MoneyTong01 }} VND
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyTong02}} VND
             </h2>
           </a-form-item>
           <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyThu }} VND / 1 Tháng
+              {{MoneyLoiRong}} VND
             </h2>
           </a-form-item>
           <a-form-item label="Tỷ suất lợi nhuận rồng" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyTyrong }} %
+              {{MoneyTyRong}} %
             </h2>
           </a-form-item>
           <a-form-item label="Thời gian hoàn vốn" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) + formMe.mb | formatMoneyHoa }} Tháng
+              {{MoneyHoa}} Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Lợi nhuận trên tổng đầu tư" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ formMe.money.reduce(function(a, b) { return a + b; }, 0) | formatMoneyLoi }} %
+              {{MoneyLoi}} %
             </h2>
           </a-form-item>
           <!-- <hr>
@@ -163,6 +174,39 @@
     // },
     computed: {
       ...mapState('dashboard', { formMe: 'formMe' }),
+      placeholder () {
+        return this.formMe.money ? Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString() : ''
+      },
+      MoneyDanhThu () {
+        return Number((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+      },
+      MoneyCocChu01 () {
+        return Number((this.formMe.gt * 3).toFixed(1)).toLocaleString()
+      },
+      MoneyCocChu02 () {
+        return Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3).toFixed(1)).toLocaleString()
+      },
+      MoneyCocKhach () {
+        return Number((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+      },
+      MoneyTong01 () {
+        return Number((this.formMe.gt * 3) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+      },
+      MoneyTong02 () {
+        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)).toFixed(1)).toLocaleString()
+      },
+      MoneyLoiRong () {
+        return Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString()
+      },
+      MoneyTyRong () {
+        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3 - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) * 100).toFixed(2))
+      },
+      MoneyHoa () {
+        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3 - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7)).toFixed(2))
+      },
+      MoneyLoi () {
+        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0)) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0)) * 0.7) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0)) * 0.7 * 4) * 100).toFixed(2))
+      },
     },
     // watch: {
     //   username () {
@@ -181,37 +225,34 @@
       }
     },
     filters: {
-      formatMoneyDanhthu: (value) => {
-        return Number((value).toFixed(1)).toLocaleString()
-      },
       formatMoneyGiathue: (value) => {
-        return Number((value*0.7).toFixed(1)).toLocaleString()
+        return Number((value * 0.7).toFixed(1)).toLocaleString()
       },
       formatMoneyToicoc: (value) => {
-        return Number((value*0.7*3).toFixed(1)).toLocaleString()
+        return Number((value * 0.7 * 3).toFixed(1)).toLocaleString()
       },
       formatMoneyTong: (value) => {
-        const me = value*0.7*3
+        const me = value * 0.7 * 3
         const Kcoc = value
         return Number((me - Kcoc).toFixed(1)).toLocaleString()
       },
       formatMoneyThu: (value) => {
-        return Number((value - value*0.7).toFixed(1)).toLocaleString()
+        return Number((value - value * 0.7).toFixed(1)).toLocaleString()
       },
       formatMoneyTyrong: (value) => {
-        const loi = value - value*0.7
-        const tong = value*0.7*3 - value
-        return Number((loi/tong*100).toFixed(2))
+        const loi = value - value * 0.7
+        const tong = value * 0.7 * 3 - value
+        return Number((loi / tong * 100).toFixed(2))
       },
       formatMoneyHoa: (value) => {
-        const loi = value - value*0.7
-        const coc = value*0.7*3 - value
-        return Number((coc/loi).toFixed(2))
+        const loi = value - value * 0.7
+        const coc = value * 0.7 * 3 - value
+        return Number((coc / loi).toFixed(2))
       },
       formatMoneyLoi: (value) => {
-        const loi = value - value*0.7
-        const tong = value*0.7*4
-        return Number((loi/tong*100).toFixed(2))
+        const loi = value - value * 0.7
+        const tong = value * 0.7 * 4
+        return Number((loi / tong * 100).toFixed(2))
       },
     },
     methods: {
