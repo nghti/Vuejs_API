@@ -43,15 +43,15 @@ router.beforeEach((to, from, next) => {
   const loggedIn = !!Helpers.getToken()
 
   if (!isPublic && !loggedIn) {
-    return next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
+    // return next({
+    //   path: '/login',
+    //   query: { redirect: to.fullPath }
+    // })
   }
 
   // Do not allow user to visit login page or register page if they are logged in
   if (loggedIn && onlyWhenLoggedOut) {
-    return next('/')
+    // return next('/')
   }
 
   to.meta.transitionName = null

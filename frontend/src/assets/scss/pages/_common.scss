@@ -1,2 +1,24 @@
 // page Common
 //
+.important {
+  ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:rgba(0, 0, 0, 0.65) !important;
+  }
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:rgba(0, 0, 0, 0.65) !important;
+  }
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:rgba(0, 0, 0, 0.65) !important;
+  }
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:rgba(0, 0, 0, 0.65) !important;
+  }
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color:rgba(0, 0, 0, 0.65) !important;
+  }
+
+  ::placeholder { /* Most modern browsers support this now. */
+   color:rgba(0, 0, 0, 0.65) !important;
+  }
+
+}

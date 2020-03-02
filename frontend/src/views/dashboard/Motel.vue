@@ -28,6 +28,7 @@
               @change="handleFormChange"
               v-decorator="[
               `money[${k}]`,
+              { rules: [{ required: true, message: 'Please input your note!' }] },
               {
                 validateTrigger: ['change', 'blur'],
               },
@@ -50,10 +51,10 @@
           </a-form-item>
           <a-form-item label="Danh thu" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{ MoneyDanhThu }} VND
+              {{ MoneyDanhThu | formatMoney }} VND
             </h2>
           </a-form-item>
-          <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold">
+          <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold important">
             <a-input-number
               :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
               :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
@@ -64,71 +65,81 @@
           </a-form-item>
           <a-form-item label="Tiền cọc với chủ" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.gt">
-              {{ MoneyCocChu01 }} VND / 3 Tháng
+              {{ MoneyCocChu01 | formatMoney }} VND /
+              <a-select
+                v-decorator="[
+                  'cocChu',
+                  { initialValue: '3 Tháng' }
+                ]"
+                style="width: 100px"
+              >
+                <a-select-option value="1">1 Tháng</a-select-option>
+                <a-select-option value="2">2 Tháng</a-select-option>
+                <a-select-option value="3">3 Tháng</a-select-option>
+                <a-select-option value="6">6 Tháng</a-select-option>
+              </a-select>
             </h2>
             <h2 v-if="formMe.gt == undefined && formMe.money">
-              {{ MoneyCocChu02 }} VND / 3 Tháng
+              {{ MoneyCocChu02 | formatMoney }} VND /
+              <a-select
+                v-decorator="[
+                  'cocChu',
+                  { initialValue: '3 Tháng' }
+                ]"
+                style="width: 100px"
+              >
+                <a-select-option value="1">1 Tháng</a-select-option>
+                <a-select-option value="2">2 Tháng</a-select-option>
+                <a-select-option value="3">3 Tháng</a-select-option>
+                <a-select-option value="6">6 Tháng</a-select-option>
+              </a-select>
             </h2>
           </a-form-item>
           <a-form-item label="Tiền cọc của khách" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
-              {{MoneyCocKhach}} VND / 1 Tháng
+              {{MoneyCocKhach | formatMoney}} VND / 1 Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Tổng đầu tư" v-bind="formItemLayout" class="red-h2 label-bold">
             <h2 v-if="formMe.gt">
-              {{ MoneyTong01 }} VND
+              {{ MoneyTong01 | formatMoney }} VND
             </h2>
             <h2 v-if="formMe.gt == undefined && formMe.money">
-              {{MoneyTong02}} VND
+              {{MoneyTong02 | formatMoney}} VND
             </h2>
           </a-form-item>
           <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold">
-            <h2 v-if="formMe.money">
-              {{MoneyLoiRong}} VND
+            <h2 v-if="formMe.gt">
+              {{MoneyLoiRong01 | formatMoney}} VND
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyLoiRong02 | formatMoney}} VND
             </h2>
           </a-form-item>
           <a-form-item label="Tỷ suất lợi nhuận rồng" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.money">
-              {{MoneyTyRong}} %
+            <h2 v-if="formMe.gt">
+              {{MoneyTyRong01 | formatMoney}} %
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyTyRong02 | formatMoneyNew}} %
             </h2>
           </a-form-item>
           <a-form-item label="Thời gian hoàn vốn" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.money">
-              {{MoneyHoa}} Tháng
+            <h2 v-if="formMe.gt">
+              {{MoneyHoa01 | formatMoneyNew}} Tháng
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyHoa02 | formatMoneyNew}} Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Lợi nhuận trên tổng đầu tư" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.money">
-              {{MoneyLoi}} %
+            <h2 v-if="formMe.gt">
+              {{MoneyLoi01 | formatMoneyNew}} Tháng
+            </h2>
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyLoi02 | formatMoneyNew}} %
             </h2>
           </a-form-item>
-          <!-- <hr>
-          <a-form-item label="Note-C" v-bind="formItemLayout">
-            <a-input
-              v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-            />
-          </a-form-item>
-          <a-form-item label="Note-DV" v-bind="formItemLayout">
-            <a-input
-              v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-            />
-          </a-form-item>
-          <a-form-item label="Note-TLG" v-bind="formItemLayout">
-            <a-input
-              v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-            />
-          </a-form-item>
-          <a-form-item label="Note-TL %" v-bind="formItemLayout">
-            <a-input
-              v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-            />
-          </a-form-item>
-          <a-form-item label="Note-QL %" v-bind="formItemLayout">
-            <a-input
-              v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-            />
-          </a-form-item> -->
           <a-form-item v-bind="formItemLayoutWithOutLabel">
             <a-button type="primary" html-type="submit">
               Tính Tiền
@@ -178,34 +189,65 @@
         return this.formMe.money ? Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString() : ''
       },
       MoneyDanhThu () {
-        return Number((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+        return this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb
       },
       MoneyCocChu01 () {
-        return Number((this.formMe.gt * 3).toFixed(1)).toLocaleString()
+        return this.formMe.gt * this.formMe.cocChu
       },
       MoneyCocChu02 () {
-        return Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3).toFixed(1)).toLocaleString()
+        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu
       },
       MoneyCocKhach () {
-        return Number((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+        return this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb
       },
       MoneyTong01 () {
-        return Number((this.formMe.gt * 3) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb).toFixed(1)).toLocaleString()
+        return (this.formMe.gt * this.formMe.cocChu) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)
       },
       MoneyTong02 () {
-        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)).toFixed(1)).toLocaleString()
+        return ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)
       },
-      MoneyLoiRong () {
-        return Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString()
+      MoneyLoiRong01 () {
+        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - this.formMe.gt
       },
-      MoneyTyRong () {
-        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3 - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) * 100).toFixed(2))
+      MoneyLoiRong02 () {
+        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7
       },
-      MoneyHoa () {
-        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * 3 - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7)).toFixed(2))
+      MoneyTyRong01 () {
+        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        this.formMe.gt) /
+        ((this.formMe.gt * this.formMe.cocChu) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb))) * 100
       },
-      MoneyLoi () {
-        return Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0)) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0)) * 0.7) / ((this.formMe.money.reduce(function (a, b) { return a + b }, 0)) * 0.7 * 4) * 100).toFixed(2))
+      MoneyTyRong02 () {
+        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) /
+        (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb))) * 100
+      },
+      MoneyHoa01 () {
+        return ((this.formMe.gt * this.formMe.cocChu) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) /
+        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        this.formMe.gt)
+      },
+      MoneyHoa02 () {
+        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) /
+        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7)
+      },
+      MoneyLoi01 () {
+        return (
+        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        this.formMe.gt) /
+        ((this.formMe.gt * (this.formMe.cocChu)) +
+        this.formMe.gt)) * 100
+      },
+      MoneyLoi02 () {
+        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
+        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) /
+        (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) +
+        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7))) * 100
       },
     },
     // watch: {
@@ -220,48 +262,28 @@
     // },
     watch: {
       formMe (data) {
-        console.log('data', data)
         this.fields = _.merge(this.fields, data)
       }
     },
     filters: {
-      formatMoneyGiathue: (value) => {
-        return Number((value * 0.7).toFixed(1)).toLocaleString()
+      formatMoney: (value) => {
+        return Number(value).toLocaleString()
       },
-      formatMoneyToicoc: (value) => {
-        return Number((value * 0.7 * 3).toFixed(1)).toLocaleString()
-      },
-      formatMoneyTong: (value) => {
-        const me = value * 0.7 * 3
-        const Kcoc = value
-        return Number((me - Kcoc).toFixed(1)).toLocaleString()
-      },
-      formatMoneyThu: (value) => {
-        return Number((value - value * 0.7).toFixed(1)).toLocaleString()
-      },
-      formatMoneyTyrong: (value) => {
-        const loi = value - value * 0.7
-        const tong = value * 0.7 * 3 - value
-        return Number((loi / tong * 100).toFixed(2))
-      },
-      formatMoneyHoa: (value) => {
-        const loi = value - value * 0.7
-        const coc = value * 0.7 * 3 - value
-        return Number((coc / loi).toFixed(2))
-      },
-      formatMoneyLoi: (value) => {
-        const loi = value - value * 0.7
-        const tong = value * 0.7 * 4
-        return Number((loi / tong * 100).toFixed(2))
+      formatMoneyNew: (value) => {
+        return Number(value).toFixed(2)
       },
     },
     methods: {
       ...mapActions('dashboard', ['postForm']),
       handleSubmit (e) {
         e.preventDefault()
+        if (undefined === this.form.getFieldValue('cocChu')) {
+          this.form.setFieldsValue({
+            cocChu: '3',
+          })
+        }
         this.form.validateFields((err, values) => {
           if (!err) {
-            console.log('values', values)
             this.postForm(values)
           }
         })
@@ -287,7 +309,6 @@
 
       add () {
         const { form } = this
-        console.log('form', form)
         // can use data-binding to get
         const keys = form.getFieldValue('keys')
         const nextKeys = keys.concat(id++)
