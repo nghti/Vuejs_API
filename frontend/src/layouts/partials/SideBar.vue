@@ -2,6 +2,7 @@
   <a-layout-sider
     :trigger="null"
     collapsible
+    collapsedWidth="0"
     v-model="collapsed"
     class="sider-menu"
   >

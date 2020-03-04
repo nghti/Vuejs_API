@@ -19,7 +19,6 @@ export default {
     try {
       await AuthService.logout()
       commit('LOGOUT_SUCCESS')
-
       router.push({
         path: '/login',
         query: { redirect: router.history.current.path }

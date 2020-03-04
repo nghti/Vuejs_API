@@ -6,7 +6,7 @@ class AuthService {
   }
 
   login ({ username, password }) {
-    return Client().post('login', { username, password })
+    return Client().post('admin', { email: username, password })
   }
 
   logout () {

@@ -8,6 +8,29 @@ const port = process.env.PORT || 8000
 app.use(cors())
 app.options('*', cors())
 
+// const parseToken = (Authorization) => {
+//   // console.log('Authorization', Authorization)
+//   return Authorization.replace('Bearer ', '')
+// }
+//
+// const checkValidToken = (token) => {
+//   // console.log('token', token)
+//   return true
+// }
+//
+// app.use(function (req, res, next) {
+//   const {headers} = req
+//
+//   const token = parseToken(headers['authorization'])
+//
+//   console.log(token)
+//   if (checkValidToken(token)) {
+//     next()
+//   }else {
+//     res.status(401).send({url: req.originalUrl + 'UnAuthenticate'})
+//   }
+// })
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 

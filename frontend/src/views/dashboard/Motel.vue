@@ -63,12 +63,12 @@
               style="width: 90%"
             />
           </a-form-item>
-          <a-form-item label="Tiền cọc với chủ" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.gt">
-              {{ MoneyCocChu01 | formatMoney }} VND /
+          <a-form-item label="Tiền trả trước" v-bind="formItemLayout" class="label-bold">
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{ MoneyTraTruoc01 | formatMoney }} VND /
               <a-select
                 v-decorator="[
-                  'cocChu',
+                  'traTruoc',
                   { initialValue: '3 Tháng' }
                 ]"
                 style="width: 100px"
@@ -79,7 +79,39 @@
                 <a-select-option value="6">6 Tháng</a-select-option>
               </a-select>
             </h2>
+            <h2 v-if="formMe.gt">
+              {{ MoneyTraTruoc02 | formatMoney }} VND /
+              <a-select
+                v-decorator="[
+                  'traTruoc',
+                  { initialValue: '3 Tháng' }
+                ]"
+                style="width: 100px"
+              >
+                <a-select-option value="1">1 Tháng</a-select-option>
+                <a-select-option value="2">2 Tháng</a-select-option>
+                <a-select-option value="3">3 Tháng</a-select-option>
+                <a-select-option value="6">6 Tháng</a-select-option>
+              </a-select>
+            </h2>
+          </a-form-item>
+          <a-form-item label="Tiền cọc với chủ" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{ MoneyCocChu01 | formatMoney }} VND /
+              <a-select
+                v-decorator="[
+                  'cocChu',
+                  { initialValue: '1 Tháng' }
+                ]"
+                style="width: 100px"
+              >
+                <a-select-option value="1">1 Tháng</a-select-option>
+                <a-select-option value="2">2 Tháng</a-select-option>
+                <a-select-option value="3">3 Tháng</a-select-option>
+                <a-select-option value="6">6 Tháng</a-select-option>
+              </a-select>
+            </h2>
+            <h2 v-if="formMe.gt">
               {{ MoneyCocChu02 | formatMoney }} VND /
               <a-select
                 v-decorator="[
@@ -95,48 +127,56 @@
               </a-select>
             </h2>
           </a-form-item>
+          <a-form-item label="Tiền đầu tư ban đầu" v-bind="formItemLayout" class="label-bold">
+            <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyBanDau01 | formatMoney}} VND
+            </h2>
+            <h2 v-if="formMe.gt">
+              {{ MoneyBanDau02 | formatMoney }} VND
+            </h2>
+          </a-form-item>
           <a-form-item label="Tiền cọc của khách" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
               {{MoneyCocKhach | formatMoney}} VND / 1 Tháng
             </h2>
           </a-form-item>
           <a-form-item label="Tổng đầu tư" v-bind="formItemLayout" class="red-h2 label-bold">
-            <h2 v-if="formMe.gt">
-              {{ MoneyTong01 | formatMoney }} VND
-            </h2>
             <h2 v-if="formMe.gt == undefined && formMe.money">
-              {{MoneyTong02 | formatMoney}} VND
+              {{MoneyTong01 | formatMoney}} VND
+            </h2>
+            <h2 v-if="formMe.gt">
+              {{ MoneyTong02 | formatMoney }} VND
             </h2>
           </a-form-item>
           <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold">
-            <h2 v-if="formMe.gt">
+            <h2 v-if="formMe.gt == undefined && formMe.money">
               {{MoneyLoiRong01 | formatMoney}} VND
             </h2>
-            <h2 v-if="formMe.gt == undefined && formMe.money">
+            <h2 v-if="formMe.gt">
               {{MoneyLoiRong02 | formatMoney}} VND
             </h2>
           </a-form-item>
           <a-form-item label="Tỷ suất lợi nhuận rồng" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.gt">
-              {{MoneyTyRong01 | formatMoney}} %
-            </h2>
             <h2 v-if="formMe.gt == undefined && formMe.money">
-              {{MoneyTyRong02 | formatMoneyNew}} %
+              {{MoneyTyRong01 | formatMoneyNew}} %
+            </h2>
+            <h2 v-if="formMe.gt">
+              {{MoneyTyRong02 | formatMoney}} %
             </h2>
           </a-form-item>
           <a-form-item label="Thời gian hoàn vốn" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.gt">
+            <h2 v-if="formMe.gt == undefined && formMe.money">
               {{MoneyHoa01 | formatMoneyNew}} Tháng
             </h2>
-            <h2 v-if="formMe.gt == undefined && formMe.money">
+            <h2 v-if="formMe.gt">
               {{MoneyHoa02 | formatMoneyNew}} Tháng
             </h2>
           </a-form-item>
-          <a-form-item label="Lợi nhuận trên tổng đầu tư" v-bind="formItemLayout" class="label-bold">
-            <h2 v-if="formMe.gt">
-              {{MoneyLoi01 | formatMoneyNew}} Tháng
-            </h2>
+          <a-form-item label="Lợi nhuận trên tổng đầu tư ban đầu" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.gt == undefined && formMe.money">
+              {{MoneyLoi01 | formatMoneyNew}} %
+            </h2>
+            <h2 v-if="formMe.gt">
               {{MoneyLoi02 | formatMoneyNew}} %
             </h2>
           </a-form-item>
@@ -180,74 +220,86 @@
       this.form = this.$form.createForm(this, { name: 'dynamic_form_item' })
       this.form.getFieldDecorator('keys', { initialValue: [], preserve: true })
     },
-    // mounted () {
-    //   this.getUsers()
-    // },
     computed: {
       ...mapState('dashboard', { formMe: 'formMe' }),
       placeholder () {
         return this.formMe.money ? Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString() : ''
       },
       MoneyDanhThu () {
-        return this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return MoneyRoom + this.formMe.mb
+      },
+      MoneyTraTruoc01 () {
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc
+      },
+      MoneyTraTruoc02 () {
+        return this.formMe.gt * this.formMe.traTruoc
       },
       MoneyCocChu01 () {
-        return this.formMe.gt * this.formMe.cocChu
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu
       },
       MoneyCocChu02 () {
-        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu
+        return this.formMe.gt * this.formMe.cocChu
+      },
+      MoneyBanDau01 () {
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu)
+      },
+      MoneyBanDau02 () {
+        return this.formMe.gt * this.formMe.traTruoc + this.formMe.gt * this.formMe.cocChu
       },
       MoneyCocKhach () {
-        return this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return MoneyRoom + this.formMe.mb
       },
       MoneyTong01 () {
-        return (this.formMe.gt * this.formMe.cocChu) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)
       },
       MoneyTong02 () {
-        return ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)
       },
       MoneyLoiRong01 () {
-        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - this.formMe.gt
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7
       },
       MoneyLoiRong02 () {
-        return (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) - (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (MoneyRoom + this.formMe.mb) - this.formMe.gt
       },
       MoneyTyRong01 () {
-        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        this.formMe.gt) /
-        ((this.formMe.gt * this.formMe.cocChu) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb))) * 100
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7) /
+          (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb))) * 100
       },
       MoneyTyRong02 () {
-        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) /
-        (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb))) * 100
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (((MoneyRoom + this.formMe.mb) - this.formMe.gt) /
+        ((this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb))) * 100
       },
       MoneyHoa01 () {
-        return ((this.formMe.gt * this.formMe.cocChu) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) /
-        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        this.formMe.gt)
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)) /
+          ((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7)
       },
       MoneyHoa02 () {
-        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb)) /
-        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7)
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return ((this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)) /
+        ((MoneyRoom + this.formMe.mb) - this.formMe.gt)
       },
       MoneyLoi01 () {
-        return (
-        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        this.formMe.gt) /
-        ((this.formMe.gt * (this.formMe.cocChu)) +
-        this.formMe.gt)) * 100
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7) /
+          (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc))) * 100
       },
       MoneyLoi02 () {
-        return (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) -
-        (this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7) /
-        (((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7 * this.formMe.cocChu) +
-        ((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7))) * 100
+        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        return (
+        ((MoneyRoom + this.formMe.mb) - this.formMe.gt) /
+        ((this.formMe.gt * (this.formMe.cocChu)) + (this.formMe.gt * this.formMe.traTruoc))) * 100
       },
     },
     // watch: {
@@ -279,7 +331,12 @@
         e.preventDefault()
         if (undefined === this.form.getFieldValue('cocChu')) {
           this.form.setFieldsValue({
-            cocChu: '3',
+            cocChu: '1',
+          })
+        }
+        if (undefined === this.form.getFieldValue('traTruoc')) {
+          this.form.setFieldsValue({
+            traTruoc: '3',
           })
         }
         this.form.validateFields((err, values) => {
