@@ -45,7 +45,7 @@ module.exports = {
         if (response[0].password == req.body.password) {
           return res.json(response)
         }else {
-          console.log('err')
+          return err
         }
       })
     },
