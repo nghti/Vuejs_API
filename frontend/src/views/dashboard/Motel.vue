@@ -10,45 +10,79 @@
               :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
               :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
               placeholder="Tiền MB dự tính"
-              v-decorator="['mb']"
+              v-decorator="
+              ['mb']
+              "
               style="width: 90%"
             />
           </a-form-item>
-          <a-form-item
-            class="label-bold"
-            v-for="(k, index) in form.getFieldValue('keys')"
-            :key="k"
-            v-bind="formItemLayout"
-            :label="`Phòng ${index+1}`"
-            :required="false"
-          >
-            <a-input-number
-              :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-              :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
-              @change="handleFormChange"
-              v-decorator="[
-              `money[${k}]`,
-              { rules: [{ required: true, message: 'Please input your note!' }] },
-              {
-                validateTrigger: ['change', 'blur'],
-              },
-            ]"
-              placeholder="Tiền phòng dự tính"
-              style="width: 90%; margin-right: 8px"
-            />
-            <a-icon
-              v-if="form.getFieldValue('keys').length > 1"
-              class="dynamic-delete-button"
-              type="minus-circle-o"
-              :disabled="form.getFieldValue('keys').length === 1"
-              @click="() => remove(k)"
-            />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayoutWithOutLabel" class="label-bold">
-            <a-button type="dashed" style="width: 220px" @click="add">
-              <a-icon type="plus" /> Thêm phòng
-            </a-button>
-          </a-form-item>
+          <a-tabs @change="callback">
+            <a-tab-pane key="1">
+              <span slot="tab">
+                <a-icon type="apple" />
+                Tổng phòng
+              </span>
+              <a-form-item label="Tổng số phòng" v-bind="formItemLayout" class="label-bold">
+                <a-input-number
+                  placeholder="Không tính mb"
+                  v-decorator="['soPhong']"
+                  style="width: 90%"
+                />
+              </a-form-item>
+              <a-form-item label="Số tiền phòng" v-bind="formItemLayout" class="label-bold">
+                <a-input-number
+                  :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                  :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
+                  placeholder="Tiền dự tính"
+                  v-decorator="
+                  ['tienTb']
+                  "
+                  style="width: 90%"
+                />
+              </a-form-item>
+            </a-tab-pane>
+            <a-tab-pane key="2">
+              <span slot="tab">
+                <a-icon type="android" />
+                Từng phòng
+              </span>
+              <a-form-item
+                class="label-bold"
+                v-for="(k, index) in form.getFieldValue('keys')"
+                :key="k"
+                v-bind="formItemLayout"
+                :label="`Phòng ${index+1}`"
+                :required="false"
+              >
+                <a-input-number
+                  :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                  :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
+                  @change="handleFormChange"
+                  v-decorator="[
+                  `money[${k}]`,
+                  { rules: [{ required: true, message: 'Please input your note!' }] },
+                  {
+                    validateTrigger: ['change', 'blur'],
+                  },
+                ]"
+                  placeholder="Tiền phòng dự tính"
+                  style="width: 90%; margin-right: 8px"
+                />
+                <a-icon
+                  v-if="form.getFieldValue('keys').length > 1"
+                  class="dynamic-delete-button"
+                  type="minus-circle-o"
+                  :disabled="form.getFieldValue('keys').length === 1"
+                  @click="() => remove(k)"
+                />
+              </a-form-item>
+              <a-form-item v-bind="formItemLayoutWithOutLabel" class="label-bold">
+                <a-button type="dashed" style="width: 220px" @click="add">
+                  <a-icon type="plus" /> Thêm phòng
+                </a-button>
+              </a-form-item>
+            </a-tab-pane>
+          </a-tabs>
           <a-form-item label="Danh thu" v-bind="formItemLayout" class="label-bold">
             <h2 v-if="formMe.money">
               {{ MoneyDanhThu | formatMoney }} VND
@@ -69,7 +103,7 @@
               <a-select
                 v-decorator="[
                   'traTruoc',
-                  { initialValue: '3 Tháng' }
+                  { initialValue: '3' }
                 ]"
                 style="width: 100px"
               >
@@ -223,80 +257,80 @@
     computed: {
       ...mapState('dashboard', { formMe: 'formMe' }),
       placeholder () {
-        return this.formMe.money ? Number(((this.formMe.money.reduce(function (a, b) { return a + b }, 0) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString() : ''
+        return this.formMe.money ? Number((((this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb) + this.formMe.mb) * 0.7).toFixed(1)).toLocaleString() : ''
       },
       MoneyDanhThu () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return MoneyRoom + this.formMe.mb
       },
       MoneyTraTruoc01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc
       },
       MoneyTraTruoc02 () {
         return this.formMe.gt * this.formMe.traTruoc
       },
       MoneyCocChu01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu
       },
       MoneyCocChu02 () {
         return this.formMe.gt * this.formMe.cocChu
       },
       MoneyBanDau01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu)
       },
       MoneyBanDau02 () {
         return this.formMe.gt * this.formMe.traTruoc + this.formMe.gt * this.formMe.cocChu
       },
       MoneyCocKhach () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return MoneyRoom + this.formMe.mb
       },
       MoneyTong01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)
       },
       MoneyTong02 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)
       },
       MoneyLoiRong01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7
       },
       MoneyLoiRong02 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (MoneyRoom + this.formMe.mb) - this.formMe.gt
       },
       MoneyTyRong01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7) /
           (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb))) * 100
       },
       MoneyTyRong02 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (((MoneyRoom + this.formMe.mb) - this.formMe.gt) /
         ((this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb))) * 100
       },
       MoneyHoa01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)) /
           ((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7)
       },
       MoneyHoa02 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return ((this.formMe.gt * this.formMe.traTruoc) + (this.formMe.gt * this.formMe.cocChu) - (MoneyRoom + this.formMe.mb)) /
         ((MoneyRoom + this.formMe.mb) - this.formMe.gt)
       },
       MoneyLoi01 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (((MoneyRoom + this.formMe.mb) - (MoneyRoom + this.formMe.mb) * 0.7) /
           (((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.cocChu) + ((MoneyRoom + this.formMe.mb) * 0.7 * this.formMe.traTruoc))) * 100
       },
       MoneyLoi02 () {
-        const MoneyRoom = this.formMe.money.reduce(function (a, b) { return a + b }, 0)
+        const MoneyRoom = (this.formMe.money.reduce(function (a, b) { return a + b }, 0) * this.formMe.soPhong * this.formMe.tienTb)
         return (
         ((MoneyRoom + this.formMe.mb) - this.formMe.gt) /
         ((this.formMe.gt * (this.formMe.cocChu)) + (this.formMe.gt * this.formMe.traTruoc))) * 100
@@ -314,7 +348,9 @@
     // },
     watch: {
       formMe (data) {
+        // console.log('data', data)
         this.fields = _.merge(this.fields, data)
+        // console.log('this.fields', this.fields)
       }
     },
     filters: {
@@ -339,11 +375,34 @@
             traTruoc: '3',
           })
         }
+        if (undefined === this.form.getFieldValue('soPhong')) {
+          this.form.setFieldsValue({
+            soPhong: 1,
+          })
+        }
+        if (undefined === this.form.getFieldValue('mb')) {
+          this.form.setFieldsValue({
+            mb: 0,
+          })
+        }
         this.form.validateFields((err, values) => {
           if (!err) {
             this.postForm(values)
           }
         })
+      },
+      callback (key) {
+        if (key === 1) {
+          this.form.setFieldsValue({
+            money: null,
+          })
+        }
+        if (key === 2) {
+          this.form.setFieldsValue({
+            soPhong: 1,
+            tienTb: 1
+          })
+        }
       },
       handleFormChange (changedFields) {
         // console.log('changedFields', changedFields)
