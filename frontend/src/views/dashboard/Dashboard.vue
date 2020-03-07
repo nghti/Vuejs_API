@@ -79,8 +79,7 @@
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
-      <hr class="style-hr">
-      <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold mt-20 important">
+      <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold important">
         <a-input-number
           :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
           :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
@@ -89,7 +88,8 @@
           style="width: 100%"
         />
       </a-form-item>
-      <a-form-item label="Tiền trả trước" v-bind="formItemLayout" class="label-bold">
+      <hr class="style-hr">
+      <a-form-item label="Tiền trả trước" v-bind="formItemLayout" class="label-bold mt-20">
         <h2 v-if="formMe.gt == undefined && formMe.money">
           {{ MoneyTraTruoc01 | formatMoney }} VND /
           <a-select
@@ -183,7 +183,8 @@
           {{ MoneyTong02 | formatMoney }} VND
         </h2>
       </a-form-item>
-      <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold">
+      <hr class="style-hr">
+      <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold mt-20">
         <h2 v-if="formMe.gt == undefined && formMe.money">
           {{MoneyLoiRong01 | formatMoney}} VND
         </h2>
@@ -191,8 +192,7 @@
           {{MoneyLoiRong02 | formatMoney}} VND
         </h2>
       </a-form-item>
-      <hr class="style-hr">
-      <a-form-item label="Lợi nhuận trên tổng đầu tư ban đầu" v-bind="formItemLayout" class="label-bold mt-20">
+      <a-form-item label="Lợi nhuận trên tổng đầu tư ban đầu" v-bind="formItemLayout" class="label-bold">
         <h2 v-if="formMe.gt == undefined && formMe.money">
           {{MoneyLoiBanDau01 | formatMoneyNew}} %
         </h2>
