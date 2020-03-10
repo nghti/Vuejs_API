@@ -5,5 +5,9 @@ export default {
 
   SET_FORM (state, data) {
     state.formMe = data
-  }
+  },
+
+  CLEAR_FORM (state, data) {
+    state.formMe = data
+  },
 }

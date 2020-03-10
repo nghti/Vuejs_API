@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div style="margin-bottom: 40px">
     <h2 class="title">Bản Tính Dòng Tiền<br>Kinh Doanh</h2>
     <a-form :form="form" @submit="handleSubmit">
-      <a-form-item label="Trệt (MB)" v-bind="formItemLayout" class="label-bold">
+      <a-form-item label="Trệt - Mặt bằng" v-bind="formItemLayout" class="label-bold">
         <a-input-number
           :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
           :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
-          placeholder="Tiền MB dự tính"
+          placeholder="Tiền mặt bằng dự tính"
           v-decorator="
               ['mb']
               "
@@ -21,7 +21,7 @@
               </span>
           <a-form-item label="Tổng số phòng" v-bind="formItemLayout" class="label-bold">
             <a-input-number
-              placeholder="Không tính mb"
+              placeholder="Không tính mặt bằng"
               v-decorator="['soPhong']"
               style="width: 100%"
             />
@@ -79,146 +79,205 @@
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
-      <a-form-item label="Giá thuê" v-bind="formItemLayout" class="label-bold important">
-        <a-input-number
-          :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
-          :placeholder="MoneyThue | formatMoney"
-          v-decorator="['gt']"
-          style="width: 100%"
-        />
-      </a-form-item>
-      <hr class="style-hr">
-      <a-form-item label="Tiền trả trước" v-bind="formItemLayout" class="label-bold mt-20">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{ MoneyTraTruoc01 | formatMoney }} VND /
-          <a-select
-            v-decorator="[
-                  'traTruoc',
-                  { initialValue: '1 Tháng' }
-                ]"
-            style="width: 100px"
-          >
-            <a-select-option value="1">1 Tháng</a-select-option>
-            <a-select-option value="2">2 Tháng</a-select-option>
-            <a-select-option value="3">3 Tháng</a-select-option>
-            <a-select-option value="4">4 Tháng</a-select-option>
-            <a-select-option value="5">5 Tháng</a-select-option>
-            <a-select-option value="6">6 Tháng</a-select-option>
-          </a-select>
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{ MoneyTraTruoc02 | formatMoney }} VND /
-          <a-select
-            v-decorator="[
-                  'traTruoc',
-                  { initialValue: '1 Tháng' }
-                ]"
-            style="width: 100px"
-          >
-            <a-select-option value="1">1 Tháng</a-select-option>
-            <a-select-option value="2">2 Tháng</a-select-option>
-            <a-select-option value="3">3 Tháng</a-select-option>
-            <a-select-option value="4">4 Tháng</a-select-option>
-            <a-select-option value="5">5 Tháng</a-select-option>
-            <a-select-option value="6">6 Tháng</a-select-option>
-          </a-select>
-        </h2>
-      </a-form-item>
-      <a-form-item label="Tiền cọc với chủ" v-bind="formItemLayout" class="label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{ MoneyCocChu01 | formatMoney }} VND /
-          <a-select
-            v-decorator="[
-                  'cocChu',
-                  { initialValue: '3 Tháng' }
-                ]"
-            style="width: 100px"
-          >
-            <a-select-option value="1">1 Tháng</a-select-option>
-            <a-select-option value="2">2 Tháng</a-select-option>
-            <a-select-option value="3">3 Tháng</a-select-option>
-            <a-select-option value="6">6 Tháng</a-select-option>
-          </a-select>
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{ MoneyCocChu02 | formatMoney }} VND /
-          <a-select
-            v-decorator="[
-                  'cocChu',
-                  { initialValue: '3 Tháng' }
-                ]"
-            style="width: 100px"
-          >
-            <a-select-option value="1">1 Tháng</a-select-option>
-            <a-select-option value="2">2 Tháng</a-select-option>
-            <a-select-option value="3">3 Tháng</a-select-option>
-            <a-select-option value="6">6 Tháng</a-select-option>
-          </a-select>
-        </h2>
-      </a-form-item>
-      <a-form-item label="Tổng đầu tư ban đầu" v-bind="formItemLayout" class="red-h2 label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyBanDau01 | formatMoney}} VND
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{ MoneyBanDau02 | formatMoney }} VND
-        </h2>
-      </a-form-item>
-      <a-form-item label="Danh thu" v-bind="formItemLayout" class="blue-h2 label-bold">
+      <a-form-item label="Giá bán" v-bind="formItemLayout" class="label-bold">
         <h2 v-if="formMe.money">
           {{ MoneyDanhThu | formatMoney }} VND
         </h2>
+        <h2 v-else>
+          VND
+        </h2>
       </a-form-item>
-      <a-form-item label="Tiền cọc của khách" v-bind="formItemLayout" class="label-bold">
+      <a-form-item label="Giá thuê *" v-bind="formItemLayout" class="label-bold important">
+        <div v-if="formMe.cocChu">
+          <a-input-number
+            :formatter="value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+            :parser="value => value.replace(/\VND\s?|(,*)/g, '')"
+            :placeholder="MoneyThue | formatMoney"
+            v-decorator="['gt']"
+            style="width: 100%; font-weight: bold"
+          />
+        </div>
+        <h2 v-else>
+          VND
+        </h2>
+      </a-form-item>
+      <hr class="style-hr">
+      <a-form-item label="Trả trước với chủ *" v-bind="formItemLayout" class="label-bold mt-20">
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{ MoneyTraTruoc01 | formatMoney }} VND /
+            <a-select
+              v-decorator="[
+                  'traTruoc',
+                  { initialValue: '3 Tháng' }
+                ]"
+              style="width: 100px"
+            >
+              <a-select-option value="1">1 Tháng</a-select-option>
+              <a-select-option value="2">2 Tháng</a-select-option>
+              <a-select-option value="3">3 Tháng</a-select-option>
+              <a-select-option value="4">4 Tháng</a-select-option>
+              <a-select-option value="5">5 Tháng</a-select-option>
+              <a-select-option value="6">6 Tháng</a-select-option>
+            </a-select>
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{ MoneyTraTruoc02 | formatMoney }} VND /
+            <a-select
+              v-decorator="[
+                  'traTruoc',
+                  { initialValue: '3 Tháng' }
+                ]"
+              style="width: 100px"
+            >
+              <a-select-option value="1">1 Tháng</a-select-option>
+              <a-select-option value="2">2 Tháng</a-select-option>
+              <a-select-option value="3">3 Tháng</a-select-option>
+              <a-select-option value="4">4 Tháng</a-select-option>
+              <a-select-option value="5">5 Tháng</a-select-option>
+              <a-select-option value="6">6 Tháng</a-select-option>
+            </a-select>
+          </h2>
+        </div>
+        <h2 v-else>
+          VND
+        </h2>
+      </a-form-item>
+      <a-form-item label="Trả cọc với chủ" v-bind="formItemLayout" class="label-bold">
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{ MoneyCocChu01 | formatMoney }} VND /
+            <a-select
+              v-decorator="[
+                  'cocChu',
+                  { initialValue: '1 Tháng' }
+                ]"
+              style="width: 100px"
+            >
+              <a-select-option value="1">1 Tháng</a-select-option>
+              <a-select-option value="2">2 Tháng</a-select-option>
+              <a-select-option value="3">3 Tháng</a-select-option>
+              <a-select-option value="6">6 Tháng</a-select-option>
+            </a-select>
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{ MoneyCocChu02 | formatMoney }} VND /
+            <a-select
+              v-decorator="[
+                  'cocChu',
+                  { initialValue: '1 Tháng' }
+                ]"
+              style="width: 100px"
+            >
+              <a-select-option value="1">1 Tháng</a-select-option>
+              <a-select-option value="2">2 Tháng</a-select-option>
+              <a-select-option value="3">3 Tháng</a-select-option>
+              <a-select-option value="6">6 Tháng</a-select-option>
+            </a-select>
+          </h2>
+        </div>
+        <h2 v-else>
+          VND
+        </h2>
+      </a-form-item>
+      <a-form-item label="Tổng đầu tư ban đầu" v-bind="formItemLayout" class="red-h2 label-bold">
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyBanDau01 | formatMoney}} VND
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{ MoneyBanDau02 | formatMoney }} VND
+          </h2>
+        </div>
+        <h2 v-else>
+          VND
+        </h2>
+      </a-form-item>
+      <a-form-item label="Nhận trước của khách" v-bind="formItemLayout" class="label-bold">
+        <h2 v-if="formMe.money">
+          {{ MoneyDanhThu | formatMoney }} VND / 1 Tháng
+        </h2>
+        <h2 v-else>
+          VND
+        </h2>
+      </a-form-item>
+      <a-form-item label="Nhận cọc của khách" v-bind="formItemLayout" class="label-bold">
         <h2 v-if="formMe.money">
           {{MoneyCocKhach | formatMoney}} VND / 1 Tháng
         </h2>
+        <h2 v-else>
+          VND
+        </h2>
       </a-form-item>
       <a-form-item label="Tổng đầu tư" v-bind="formItemLayout" class="red-h2 label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyTong01 | formatMoney}} VND
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{ MoneyTong02 | formatMoney }} VND
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyTong01 | formatMoney}} VND
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{ MoneyTong02 | formatMoney }} VND
+          </h2>
+        </div>
+        <h2 v-else>
+          VND
         </h2>
       </a-form-item>
       <hr class="style-hr">
       <a-form-item label="Lợi nhuận rồng" v-bind="formItemLayout" class="blue-h2 label-bold mt-20">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyLoiRong01 | formatMoney}} VND
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{MoneyLoiRong02 | formatMoney}} VND
-        </h2>
-      </a-form-item>
-      <a-form-item label="Lợi nhuận trên tổng đầu tư ban đầu" v-bind="formItemLayout" class="label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyLoiBanDau01 | formatMoneyNew}} %
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{MoneyLoiBanDau02 | formatMoneyNew}} %
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyLoiRong01 | formatMoney}} VND
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{MoneyLoiRong02 | formatMoney}} VND
+          </h2>
+        </div>
+        <h2 v-else>
+          VND
         </h2>
       </a-form-item>
       <a-form-item label="Lợi nhuận trên tổng đầu tư" v-bind="formItemLayout" class="label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyTyRong01 | formatMoneyNew}} %
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyTyRong01 | formatMoneyNew}} %
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{MoneyTyRong02 | formatMoney}} %
+          </h2>
+        </div>
+        <h2 v-else>
+          %
         </h2>
-        <h2 v-if="formMe.gt">
-          {{MoneyTyRong02 | formatMoney}} %
+      </a-form-item>
+      <a-form-item label="Lợi nhuận trên tổng đầu tư ban đầu" v-bind="formItemLayout" class="label-bold">
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyLoiBanDau01 | formatMoneyNew}} %
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{MoneyLoiBanDau02 | formatMoneyNew}} %
+          </h2>
+        </div>
+        <h2 v-else>
+          %
         </h2>
       </a-form-item>
       <a-form-item label="Thời gian hoàn vốn" v-bind="formItemLayout" class="label-bold">
-        <h2 v-if="formMe.gt == undefined && formMe.money">
-          {{MoneyHoa01 | formatMoneyNew}} Tháng
-        </h2>
-        <h2 v-if="formMe.gt">
-          {{MoneyHoa02 | formatMoneyNew}} Tháng
+        <div v-if="formMe.cocChu">
+          <h2 v-if="formMe.gt == undefined && formMe.money">
+            {{MoneyHoa01 | formatMoneyNew}} Tháng
+          </h2>
+          <h2 v-if="formMe.gt">
+            {{MoneyHoa02 | formatMoneyNew}} Tháng
+          </h2>
+        </div>
+        <h2 v-else>
+          Tháng
         </h2>
       </a-form-item>
-      <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-form-item v-bind="formItemLayoutWithOutLabel" class="form-footer">
         <div class="flex-between">
-          <a-button onClick="window.location.reload();">
+          <a-button @click="clearSubmit">
             Tính Lại
           </a-button>
           <a-button type="primary" html-type="submit">
@@ -344,17 +403,17 @@
       },
     },
     methods: {
-      ...mapActions('dashboard', ['postForm']),
+      ...mapActions('dashboard', ['postForm', 'clearForm']),
       handleSubmit (e) {
         e.preventDefault()
         if (undefined === this.form.getFieldValue('cocChu')) {
           this.form.setFieldsValue({
-            cocChu: '3',
+            cocChu: '1',
           })
         }
         if (undefined === this.form.getFieldValue('traTruoc')) {
           this.form.setFieldsValue({
-            traTruoc: '1',
+            traTruoc: '3',
           })
         }
         if (undefined === this.form.getFieldValue('mb')) {
@@ -382,6 +441,10 @@
             this.postForm(values)
           }
         })
+      },
+      clearSubmit () {
+        this.clearForm()
+        this.form.resetFields()
       },
       callback (key) {
         if (key === 1) {
@@ -441,5 +504,15 @@
     label {
       color: #00FF00;
     }
+  }
+  .form-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    margin: 0;
+    padding: 12px;
+    box-shadow: 0 0 6px 2px rgba(0, 21, 41, 0.08);
   }
 </style>

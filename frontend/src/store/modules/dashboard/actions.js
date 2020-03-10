@@ -12,7 +12,6 @@ export default {
   },
 
   async delUsers ({ commit }, payload) {
-    console.log('payload', payload)
     try {
       const data = await DashboardService.delUsers(payload)
       console.log('data', data)
@@ -23,9 +22,17 @@ export default {
   },
 
   async postForm ({ commit }, payload) {
-    console.log('payload', payload)
     try {
       commit('SET_FORM', payload)
+    } catch (e) {
+      error(window.trans('error'))
+    }
+  },
+
+  async clearForm ({ commit }, payload) {
+    payload = {}
+    try {
+      commit('CLEAR_FORM', payload)
     } catch (e) {
       error(window.trans('error'))
     }
