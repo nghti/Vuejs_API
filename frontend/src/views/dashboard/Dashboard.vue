@@ -10,7 +10,7 @@
           v-decorator="
               ['mb']
               "
-          style="width: 90%"
+          style="width: 100%"
         />
       </a-form-item>
       <a-tabs @change="callback">
